@@ -29,7 +29,7 @@ for _worker in ${_arr_worker[@]}
 do
   if [[ "$_worker" == *worker_1 ]]
   then
-    ROLEFLAGS="--ectd --worker --controlplane"
+    ROLEFLAGS="--etcd --worker --controlplane"
   else
     ROLEFLAGS="--worker"
   fi
