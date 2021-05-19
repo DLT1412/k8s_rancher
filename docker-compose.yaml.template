@@ -13,4 +13,4 @@ services:
     image: docker:20.10.6-dind
     restart: "always"
     deploy:
-      replicas: __NUM_OF_NODE__
+      replicas: __NUM_OF_WORKER__

@@ -5,14 +5,14 @@ K8S_VERSION=v1.20.6-rancher1-1
 RANCHER_SERVER=rancher_server
 EXPOSED_HTTPS_PORT=443
 EXPOSED_HTTS_PORT=80
-NUM_OF_NODE=2
+NUM_OF_WORKER=2
 
 docker compose down -v
 cp docker-compose.yaml.template docker-compose.yaml
 sed -i '' "s|__RANCHER_SERVER__|$RANCHER_SERVER|" docker-compose.yaml
 sed -i '' "s|__EXPOSED_HTTPS_PORT__|$EXPOSED_HTTPS_PORT|" docker-compose.yaml
 sed -i '' "s|__EXPOSED_HTTP_PORT__|$EXPOSED_HTTP_PORT|" docker-compose.yaml
-sed -i '' "s|__NUM_OF_NODE__|$NUM_OF_NODE|" docker-compose.yaml
+sed -i '' "s|__NUM_OF_WORKER__|$NUM_OF_WORKER|" docker-compose.yaml
 
 docker compose up -d
 
