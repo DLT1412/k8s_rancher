@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  __RANCHER_SERVER__:
+    privileged: true
+    image: rancher/rancher:v2.5.8-linux-amd64
+    container_name: __RANCHER_SERVER__
+    restart: "always"
+    ports:
+      - "__EXPOSED_HTTPS_PORT__:443"
+      - "__EXPOSED_HTTP_PORT__:80"
+  worker:
+    privileged: true
+    image: docker:20.10.6-dind
+    restart: "always"
+    deploy:
+      replicas: __NUM_OF_NODE__

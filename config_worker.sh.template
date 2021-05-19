@@ -1,0 +1,55 @@
+#!/bin/sh
+apk add curl jq sudo vim
+rancher_server="__RANCHER_SERVER__"
+admin_password="__ADMIN_PASSWORD__"
+cluster_name="__CLUSTER_NAME__"
+ROLEFLAGS="__ROLEFLAGS__"
+
+# https://github.com/rancher/rancher/issues/12205#issuecomment-385661588
+mount --make-rshared /
+
+# Login
+while true; do
+    LOGINRESPONSE=$(curl \
+        -s "https://$rancher_server/v3-public/localProviders/local?action=login" -H 'content-type: application/json' --data-binary '{"username":"admin","password":"'$admin_password'"}' --insecure)
+    LOGINTOKEN=$(echo $LOGINRESPONSE | jq -r .token)
+
+    if [ -n "$LOGINTOKEN" ]; then
+        break
+    else
+        sleep 5
+    fi
+done
+
+# Test if cluster is created
+while true; do
+  CLUSTERID=$(curl \
+      -sLk \
+      -H "Authorization: Bearer $LOGINTOKEN" \
+      "https://$rancher_server/v3/clusters?name=$cluster_name" | jq -r '.data[].id')
+
+  if [ -n "$CLUSTERID" ]; then
+    break
+  else
+    sleep 5
+  fi
+done
+
+# Get token
+# Test if cluster is created
+while true; do
+  AGENTCMD=$(curl \
+      -sLk \
+      -H "Authorization: Bearer $LOGINTOKEN" \
+      "https://$rancher_server/v3/clusterregistrationtoken?clusterId=$CLUSTERID" | jq -r '.data[].nodeCommand' | head -1)
+
+  if [ -n "$AGENTCMD" ]; then
+    break
+  else
+    sleep 5
+  fi
+done
+
+# Show the command
+COMPLETECMD="$AGENTCMD $ROLEFLAGS"
+$COMPLETECMD
