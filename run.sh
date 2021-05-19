@@ -20,6 +20,7 @@ cp config_master.sh.template config_master.sh
 sed -i '' "s|__RANCHER_SERVER__|$RANCHER_SERVER|" config_master.sh
 sed -i '' "s|__ADMIN_PASSWORD__|$ADMIN_PASSWORD|" config_master.sh
 sed -i '' "s|__K8S_VERSION__|$K8S_VERSION|" config_master.sh
+sed -i '' "s|__CLUSTER_NAME__|$CLUSTER_NAME|" config_master.sh
 docker cp config_master.sh $RANCHER_SERVER:/
 docker exec -it $RANCHER_SERVER /bin/sh -c "sh /config_master.sh"
 
