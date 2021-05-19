@@ -37,6 +37,6 @@ do
   sed -i '' "s|__ADMIN_PASSWORD__|$ADMIN_PASSWORD|" config_worker.sh
   sed -i '' "s|__CLUSTER_NAME__|$CLUSTER_NAME|" config_worker.sh
   sed -i '' "s|__ROLEFLAGS__|$ROLEFLAGS|" config_worker.sh
-  docker cp config_master.sh $_worker:/
+  docker cp config_worker.sh $_worker:/
   docker exec -it $_worker /bin/sh -c "sh /config_worker.sh"
 done
